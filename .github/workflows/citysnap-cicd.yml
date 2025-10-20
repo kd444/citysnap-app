@@ -64,11 +64,17 @@ jobs:
                   NEXT_PUBLIC_ENV: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
               run: npm run build
 
+            - name: Verify build output exists
+              run: |
+                  test -d ${{ env.BUILD_PATH }} && [ "$(ls -A ${{ env.BUILD_PATH }})" ] || { echo "${{ env.BUILD_PATH }} is missing or empty"; exit 1; }
+
             - name: Save build output
               uses: actions/upload-artifact@v4
               with:
                   name: csnap-next-build
                   path: ${{ env.APP_PATH }}/${{ env.BUILD_PATH }}
+                  if-no-files-found: error
+                  retention-days: 7
 
     deploy-prod:
         needs: build
