@@ -10,6 +10,9 @@ import {
 } from "@/lib/apis";
 import { Suspense } from "react";
 
+// Force dynamic rendering because this page depends on searchParams
+export const dynamic = "force-dynamic";
+
 interface PageProps {
     searchParams: {
         q?: string;
