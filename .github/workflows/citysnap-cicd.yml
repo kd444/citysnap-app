@@ -64,6 +64,13 @@ jobs:
                   NEXT_PUBLIC_ENV: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
               run: npm run build
 
+            - name: Show workspace and .next contents
+              run: |
+                  pwd
+                  ls -la
+                  echo "--- ${{ env.BUILD_PATH }} ---"
+                  ls -la ${{ env.BUILD_PATH }} || true
+
             - name: Verify build output exists
               run: |
                   test -d ${{ env.BUILD_PATH }} && [ "$(ls -A ${{ env.BUILD_PATH }})" ] || { echo "${{ env.BUILD_PATH }} is missing or empty"; exit 1; }
